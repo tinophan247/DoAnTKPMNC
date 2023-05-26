@@ -14,6 +14,10 @@ builder.Services.AddDbContext<TKPMNCContext>(
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+builder.Services.AddCors(p => p.AddPolicy("VoucherHunter", build =>
+{
+    build.WithOrigins("https://voucher-hunter.netlify.app/", "https://localhost:3000");
+}));
 
 var app = builder.Build();
 
@@ -27,6 +31,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("VoucherHunter");
 
 app.MapControllers();
 
